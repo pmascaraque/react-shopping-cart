@@ -1,6 +1,6 @@
+import { useEffect, useState } from "react";
 import { Button, Stack } from "react-bootstrap";
 import { useShoppingCart } from "../context/ShoppingCartContext";
-import storeItems from "../data/items.json";
 import { formatCurrency } from "../utilities/formatCurrency";
 
 type CartItemProps = {
@@ -8,15 +8,38 @@ type CartItemProps = {
   quantity: number;
 };
 
-export function CartItem({ id, quantity }: CartItemProps) {
-  const { removeFromCart } = useShoppingCart();
-  const item = storeItems.find((i) => i.id === id);
-  if (item == null) return null;
+type StoreItemProps = {
+  id: number;
+  title: string;
+  price: number;
+  category: string;
+  description: string;
+  image: string;
+};
 
+export function CartItem({ id, quantity }: CartItemProps) {
+  const [data, setData] = useState<null | StoreItemProps[]>(null);
+  const { removeFromCart } = useShoppingCart();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch("https://fakestoreapi.com/products");
+      const newData = await response.json();
+
+      setData(newData);
+    };
+
+    fetchData();
+  }, []);
+  
+  if (data == null) return null;
+  const item = data.find((i) => i.id === id);
+
+  if (item == null) return null;
   return (
     <Stack direction='horizontal' gap={2} className='d-flex align-items-center'>
       <img
-        src={item.imgUrl}
+        src={item.image}
         style={{ width: "125px", height: "75px", objectFit: "cover" }}
       />
       <div className='me-auto'>

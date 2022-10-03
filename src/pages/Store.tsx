@@ -23,7 +23,6 @@ export function Store() {
     };
 
     fetchData();
-    console.log(data);
   }, []);
 
   return (

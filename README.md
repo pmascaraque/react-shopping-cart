@@ -10,4 +10,4 @@ yarn dev
 npm run dev
 ```
 
-Or check it out [here](react-shopping-cart-sandy.vercel.app)!
+Or check it out [here](https://react-shopping-cart-sandy.vercel.app/)!
